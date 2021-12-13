@@ -1,27 +1,32 @@
 import { Component } from 'react';
 
+//Context
+import UsersContext from '../store/users-context';
+
+//Components
 import Users from './Users';
 
 //Styles
 import classes from './UserFinder.module.css';
 
-//Data
-const DUMMY_USERS = [
-  { id: 'u1', name: 'Max' },
-  { id: 'u2', name: 'Manuel' },
-  { id: 'u3', name: 'Julie' },
-];
-
 class UserFinder extends Component {
+  //Context
+  static contextType = UsersContext;
+
   state = {
-    filteredUsers: DUMMY_USERS,
+    filteredUsers: [],
     searchTerm: ''
+  }
+
+  componentDidMount() {
+    //Simulate http request
+    this.setState({ filteredUsers: this.context.users })
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.searchTerm !== this.state.searchTerm) {
       this.setState({
-        filteredUsers: DUMMY_USERS.filter((user) => user.name.includes(this.state.searchTerm))
+        filteredUsers: this.context.users.filter((user) => user.name.includes(this.state.searchTerm))
       });
     }
   }
