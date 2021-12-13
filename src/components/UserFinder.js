@@ -1,24 +1,23 @@
-import { Fragment, useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 
+//Context
+import UsersContext from '../store/users-context';
+
+//Components
 import Users from './Users';
 
 //Styles
 import classes from './UserFinder.module.css';
 
-//Data
-const DUMMY_USERS = [
-  { id: 'u1', name: 'Max' },
-  { id: 'u2', name: 'Manuel' },
-  { id: 'u3', name: 'Julie' },
-];
-
 const UserFinder = () => {
-  const [filteredUsers, setFilteredUsers] = useState(DUMMY_USERS);
+  const { users } = useContext(UsersContext)
+
+  const [filteredUsers, setFilteredUsers] = useState(users);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     setFilteredUsers(
-      DUMMY_USERS.filter((user) => user.name.includes(searchTerm))
+      users.filter((user) => user.name.includes(searchTerm))
     );
   }, [searchTerm]);
 
@@ -27,12 +26,12 @@ const UserFinder = () => {
   };
 
   return (
-    <Fragment>
+    <>
       <div className={classes.finder}>
         <input type='search' onChange={searchChangeHandler} />
       </div>
       <Users users={filteredUsers} />
-    </Fragment>
+    </>
   );
 };
 
